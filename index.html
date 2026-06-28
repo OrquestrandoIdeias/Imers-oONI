@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anamnese — Imersão Orquestrando Ideias</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f3ef;
+    color: #1a1a1a;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  .header-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #d4840a;
+    background: #fef3e0;
+    border: 1px solid #f5c96a;
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-bottom: 1rem;
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a2a4a;
+    margin-bottom: 0.4rem;
+  }
+  .header h1 span { color: #d4840a; }
+  .header p {
+    font-size: 14px;
+    color: #666;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Info box */
+  .info-box {
+    background: #fff8ec;
+    border: 1px solid #f5c96a;
+    border-left: 4px solid #d4840a;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #7a5010;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  /* Card / section */
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e4e2dc;
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #ece9e2;
+  }
+  .section-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #1a2a4a;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a2a4a;
+  }
+
+  /* Fields */
+  .field { margin-bottom: 1.1rem; }
+  .field:last-child { margin-bottom: 0; }
+
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 6px;
+  }
+  .required-star { color: #c0392b; margin-left: 2px; }
+
+  .field input[type="text"],
+  .field input[type="tel"],
+  .field input[type="number"],
+  .field select,
+  .field textarea {
+    width: 100%;
+    font-size: 14px;
+    font-family: inherit;
+    color: #1a1a1a;
+    background: #faf9f7;
+    border: 1px solid #d8d5cc;
+    border-radius: 8px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: #d4840a;
+    box-shadow: 0 0 0 3px rgba(212,132,10,0.12);
+    background: #fff;
+  }
+  .field textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+  .field select { cursor: pointer; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px) {
+    .row2, .row3 { grid-template-columns: 1fr; }
+  }
+
+  /* Checkbox / radio groups */
+  .check-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .check-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    color: #333;
+    background: #faf9f7;
+    border: 1px solid #d8d5cc;
+    border-radius: 8px;
+    padding: 7px 12px;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+    user-select: none;
+  }
+  .check-label:hover { background: #f0ede5; border-color: #bbb; }
+  .check-label input { margin: 0; accent-color: #d4840a; width: 15px; height: 15px; cursor: pointer; }
+  .check-label.selected { background: #fff8ec; border-color: #d4840a; color: #7a5010; }
+
+  .hint { font-size: 12px; color: #999; margin-top: 5px; line-height: 1.5; }
+
+  /* Submit button */
+  .btn-wrap { text-align: center; margin-top: 2rem; }
+  .btn-submit {
+    background: #1a2a4a;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 40px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    letter-spacing: 0.01em;
+  }
+  .btn-submit:hover { background: #253d6e; }
+  .btn-submit:active { transform: scale(0.98); }
+
+  /* Result */
+  .result {
+    display: none;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e4e2dc;
+    padding: 1.75rem;
+    margin-top: 1.5rem;
+  }
+  .result-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a2a4a;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .result-section { margin-bottom: 1.25rem; }
+  .result-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #d4840a;
+    margin-bottom: 8px;
+  }
+  .result-row {
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    margin-bottom: 5px;
+    line-height: 1.5;
+  }
+  .result-key { color: #888; min-width: 180px; flex-shrink: 0; }
+  .result-val { color: #1a1a1a; }
+  .tag {
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 9px;
+    border-radius: 6px;
+    margin: 2px 2px 2px 0;
+    font-weight: 500;
+  }
+  .tag-blue { background: #e8f0fb; color: #1a4a8a; }
+  .tag-amber { background: #fff3dc; color: #7a5010; }
+  .tag-green { background: #e6f5ec; color: #1a6a3a; }
+  .tag-red { background: #fce8e8; color: #8a1a1a; }
+
+  .result-divider { border: none; border-top: 1px solid #ece9e2; margin: 1.25rem 0; }
+
+  .copy-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    background: #f4f3ef;
+    border: 1px solid #d8d5cc;
+    border-radius: 8px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #444;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.12s;
+  }
+  .copy-btn:hover { background: #e8e6df; }
+
+  .diagnose-box {
+    background: #f0f6ff;
+    border: 1px solid #b8d0f5;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-top: 1.25rem;
+  }
+  .diagnose-box h4 { font-size: 13px; font-weight: 600; color: #1a3a6a; margin-bottom: 8px; }
+  .diagnose-item { font-size: 13px; color: #1a3a6a; margin-bottom: 4px; line-height: 1.5; }
+  .diagnose-item::before { content: "→ "; font-weight: 700; }
+
+  .footer {
+    text-align: center;
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 2.5rem;
+    padding-bottom: 1rem;
+  }
+  .footer strong { color: #d4840a; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-badge">Imersão Presencial</div>
+    <h1>Anamnese da <span>Orquestra</span></h1>
+    <p>Preencha com calma antes da imersão. Suas respostas ajudam a personalizar cada detalhe do dia para a realidade do seu grupo.</p>
+  </div>
+
+  <div class="info-box">
+    ⏱ Tempo estimado: <strong>5 a 8 minutos</strong> · Todas as informações são confidenciais e usadas exclusivamente para preparação da imersão.
+  </div>
+
+  <!-- SEÇÃO 1 -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title">Identificação</div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Nome do regente <span class="required-star">*</span></label>
+        <input type="text" id="nome" placeholder="Nome completo">
+      </div>
+      <div class="field">
+        <label>WhatsApp <span class="required-star">*</span></label>
+        <input type="tel" id="whatsapp" placeholder="(XX) XXXXX-XXXX">
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Igreja / denominação <span class="required-star">*</span></label>
+        <input type="text" id="igreja" placeholder="Ex: AD Madureira — Bauru">
+      </div>
+      <div class="field">
+        <label>Cidade / Estado <span class="required-star">*</span></label>
+        <input type="text" id="cidade" placeholder="Ex: Bauru / SP">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Há quanto tempo você rege essa orquestra?</label>
+      <div class="check-group" id="grp-tempo">
+        <label class="check-label"><input type="radio" name="tempo" value="Menos de 1 ano"> Menos de 1 ano</label>
+        <label class="check-label"><input type="radio" name="tempo" value="1 a 3 anos"> 1 a 3 anos</label>
+        <label class="check-label"><input type="radio" name="tempo" value="3 a 5 anos"> 3 a 5 anos</label>
+        <label class="check-label"><input type="radio" name="tempo" value="Mais de 5 anos"> Mais de 5 anos</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 2 -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title">O grupo</div>
+    </div>
+
+    <div class="row3">
+      <div class="field">
+        <label>Total de músicos ativos</label>
+        <input type="number" id="total" placeholder="Ex: 12" min="1">
+      </div>
+      <div class="field">
+        <label>Frequência nos ensaios</label>
+        <select id="frequencia">
+          <option value="">Selecione</option>
+          <option>Alta (acima de 80%)</option>
+          <option>Média (50 a 80%)</option>
+          <option>Baixa (abaixo de 50%)</option>
+          <option>Muito irregular</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Nível técnico geral</label>
+        <select id="nivel">
+          <option value="">Selecione</option>
+          <option>Iniciante</option>
+          <option>Básico</option>
+          <option>Intermediário</option>
+          <option>Misto (varia muito)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Instrumentos presentes no grupo</label>
+      <div class="check-group" id="grp-instrumentos">
+        <label class="check-label"><input type="checkbox" name="inst" value="Flauta"> Flauta</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Clarinete"> Clarinete</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Sax Soprano"> Sax Soprano</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Sax Alto"> Sax Alto</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Sax Tenor"> Sax Tenor</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Trompa"> Trompa</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Trompete"> Trompete</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Trombone"> Trombone</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Bombardino"> Bombardino</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Tuba"> Tuba</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Violino"> Violino</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Viola"> Viola</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Violoncelo"> Violoncelo</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Teclado"> Teclado</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Guitarra/Violão"> Guitarra/Violão</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Baixo Elétrico"> Baixo Elétrico</label>
+        <label class="check-label"><input type="checkbox" name="inst" value="Bateria"> Bateria</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 3 -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title">Dificuldades</div>
+    </div>
+
+    <div class="field">
+      <label>Quais os maiores desafios do grupo hoje? (marque todos que se aplicam)</label>
+      <div class="check-group" id="grp-desafios">
+        <label class="check-label"><input type="checkbox" name="des" value="Motivação / engajamento"> Motivação / engajamento</label>
+        <label class="check-label"><input type="checkbox" name="des" value="Faltas frequentes"> Faltas frequentes</label>
+        <label class="check-label"><input type="checkbox" name="des" value="Dificuldade de leitura musical"> Dificuldade de leitura musical</label>
+        <label class="check-label"><input type="checkbox" name="des" value="Afinação e equilíbrio sonoro"> Afinação e equilíbrio sonoro</label>
+        <label class="check-label"><input type="checkbox" name="des" value="Falta de repertório organizado"> Falta de repertório organizado</label>
+        <label class="check-label"><input type="checkbox" name="des" value="Ensaios improdutivos"> Ensaios improdutivos</label>
+        <label class="check-label"><input type="checkbox" name="des" value="Dificuldade na regência"> Dificuldade na regência</label>
+        <label class="check-label"><input type="checkbox" name="des" value="Falta de novos músicos"> Falta de novos músicos</label>
+        <label class="check-label"><input type="checkbox" name="des" value="Conflitos internos no grupo"> Conflitos internos no grupo</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Descreva brevemente o maior problema atual da orquestra</label>
+      <textarea id="problema" placeholder="Ex: Os músicos faltam muito e quando chegam, o ensaio acaba sendo improdutivo porque falta organização..."></textarea>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 4 -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title">Repertório e funcionamento</div>
+    </div>
+
+    <div class="field">
+      <label>Qual o repertório principal da orquestra?</label>
+      <div class="check-group" id="grp-rep">
+        <label class="check-label"><input type="checkbox" name="rep" value="Harpa Cristã (hinos)"> Harpa Cristã (hinos)</label>
+        <label class="check-label"><input type="checkbox" name="rep" value="Dobrados"> Dobrados</label>
+        <label class="check-label"><input type="checkbox" name="rep" value="Gospel contemporâneo"> Gospel contemporâneo</label>
+        <label class="check-label"><input type="checkbox" name="rep" value="Clássico / erudito"> Clássico / erudito</label>
+        <label class="check-label"><input type="checkbox" name="rep" value="Acompanhamento de grupos vocais"> Acompanhamento de grupos vocais</label>
+        <label class="check-label"><input type="checkbox" name="rep" value="Misto"> Misto</label>
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Com que frequência ensaiam?</label>
+        <select id="freq-ensaio">
+          <option value="">Selecione</option>
+          <option>Semanalmente</option>
+          <option>Quinzenalmente</option>
+          <option>Mensalmente</option>
+          <option>Sem regularidade</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Ferramenta de organização que usam</label>
+        <select id="ferramenta">
+          <option value="">Selecione</option>
+          <option>Google Drive</option>
+          <option>Só WhatsApp</option>
+          <option>Pasta física / papel</option>
+          <option>Nenhuma</option>
+          <option>Outro</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO 5 -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title">Expectativas</div>
+    </div>
+
+    <div class="field">
+      <label>O que você mais espera da imersão? <span class="required-star">*</span></label>
+      <textarea id="expectativa" placeholder="Ex: Quero que os músicos se sintam mais motivados e que o grupo tenha mais identidade..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Há alguma situação delicada no grupo que devo saber antes de chegar?</label>
+      <textarea id="delicado" placeholder="Ex: Tem um músico mais antigo que costuma resistir a mudanças..."></textarea>
+      <p class="hint">🔒 Informação confidencial — usada apenas para preparação.</p>
+    </div>
+  </div>
+
+  <div class="btn-wrap">
+    <button class="btn-submit" onclick="gerarResumo()">Gerar resumo e enviar para Thiago</button>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="result" id="resultado">
+    <div class="result-title">
+      ✅ Anamnese concluída
+    </div>
+
+    <div class="result-section">
+      <div class="result-section-label">Identificação</div>
+      <div id="res-id"></div>
+    </div>
+
+    <hr class="result-divider">
+
+    <div class="result-section">
+      <div class="result-section-label">O grupo</div>
+      <div id="res-grupo"></div>
+    </div>
+
+    <hr class="result-divider">
+
+    <div class="result-section">
+      <div class="result-section-label">Desafios e repertório</div>
+      <div id="res-desafios"></div>
+    </div>
+
+    <hr class="result-divider">
+
+    <div class="result-section">
+      <div class="result-section-label">Expectativas</div>
+      <div id="res-exp"></div>
+    </div>
+
+    <div class="diagnose-box" id="diagnose-box"></div>
+
+    <hr class="result-divider">
+    <p style="font-size:13px; color:#666; line-height:1.6;">
+      Copie o resumo abaixo e envie para <strong style="color:#d4840a;">@orquestrandoideias</strong> no Instagram ou WhatsApp antes da data combinada.
+    </p>
+    <button class="copy-btn" onclick="copiarTexto()">📋 Copiar resumo em texto</button>
+    <div id="copy-msg" style="font-size:12px; color:#3a8a3a; margin-top:6px; display:none;">Copiado com sucesso!</div>
+  </div>
+
+  <div class="footer">
+    <strong>Orquestrando Ideias</strong> · Thiago Silva · @orquestrandoideias
+  </div>
+</div>
+
+<script>
+  // Highlight selected checkboxes/radios
+  document.querySelectorAll('.check-group').forEach(group => {
+    group.querySelectorAll('input').forEach(input => {
+      input.addEventListener('change', () => {
+        const lbl = input.closest('.check-label');
+        if (input.type === 'radio') {
+          group.querySelectorAll('.check-label').forEach(l => l.classList.remove('selected'));
+        }
+        if (input.checked) lbl.classList.add('selected');
+        else lbl.classList.remove('selected');
+      });
+    });
+  });
+
+  function val(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  }
+
+  function checkedVals(name) {
+    return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(e => e.value);
+  }
+
+  function radioVal(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : '—';
+  }
+
+  function row(key, value) {
+    return `<div class="result-row"><span class="result-key">${key}</span><span class="result-val">${value || '—'}</span></div>`;
+  }
+
+  function tags(arr, cls) {
+    if (!arr.length) return '<span style="color:#aaa">Não informado</span>';
+    return arr.map(v => `<span class="tag ${cls}">${v}</span>`).join('');
+  }
+
+  function desafioClass(d) {
+    if (['Motivação / engajamento','Faltas frequentes','Conflitos internos no grupo'].includes(d)) return 'tag-amber';
+    if (['Dificuldade de leitura musical','Afinação e equilíbrio sonoro','Dificuldade na regência'].includes(d)) return 'tag-blue';
+    return 'tag-green';
+  }
+
+  function gerarResumo() {
+    const nome = val('nome');
+    const whatsapp = val('whatsapp');
+    const igreja = val('igreja');
+    const cidade = val('cidade');
+    const tempo = radioVal('tempo');
+    const total = val('total');
+    const frequencia = val('frequencia');
+    const nivel = val('nivel');
+    const problema = val('problema');
+    const expectativa = val('expectativa');
+    const delicado = val('delicado');
+    const freqEnsaio = val('freq-ensaio');
+    const ferramenta = val('ferramenta');
+    const instrumentos = checkedVals('inst');
+    const desafios = checkedVals('des');
+    const repertorio = checkedVals('rep');
+
+    if (!nome || !igreja || !expectativa) {
+      alert('Por favor, preencha pelo menos: nome, igreja e expectativas (campos obrigatórios).');
+      return;
+    }
+
+    document.getElementById('res-id').innerHTML =
+      row('Regente', nome) +
+      row('WhatsApp', whatsapp) +
+      row('Igreja', `${igreja} — ${cidade}`) +
+      row('Tempo de regência', tempo);
+
+    document.getElementById('res-grupo').innerHTML =
+      row('Total de músicos', total) +
+      row('Frequência nos ensaios', frequencia) +
+      row('Nível técnico geral', nivel) +
+      row('Frequência de ensaios', freqEnsaio) +
+      row('Ferramenta de organização', ferramenta) +
+      `<div class="result-row"><span class="result-key">Instrumentos</span><span class="result-val">${tags(instrumentos, 'tag-blue')}</span></div>`;
+
+    const desHtml = desafios.length
+      ? desafios.map(d => `<span class="tag ${desafioClass(d)}">${d}</span>`).join('')
+      : '<span style="color:#aaa">Nenhum marcado</span>';
+
+    document.getElementById('res-desafios').innerHTML =
+      `<div class="result-row"><span class="result-key">Repertório</span><span class="result-val">${tags(repertorio, 'tag-green')}</span></div>` +
+      `<div class="result-row"><span class="result-key">Desafios</span><span class="result-val">${desHtml}</span></div>` +
+      (problema ? row('Problema principal', `<em>${problema}</em>`) : '');
+
+    document.getElementById('res-exp').innerHTML =
+      row('Expectativas', `<em>${expectativa}</em>`) +
+      (delicado ? row('Situação delicada', `<em>${delicado}</em>`) : '');
+
+    // Diagnóstico automático
+    const sugestoes = [];
+    if (desafios.some(d => ['Motivação / engajamento','Faltas frequentes','Conflitos internos no grupo'].includes(d))) {
+      sugestoes.push('Iniciar o dia com o bloco de Propósito e Compromisso antes do conteúdo técnico');
+    }
+    if (desafios.some(d => ['Dificuldade de leitura musical','Afinação e equilíbrio sonoro'].includes(d))) {
+      sugestoes.push('Priorizar exercícios de leitura e afinação na sessão prática da tarde');
+    }
+    if (desafios.includes('Falta de repertório organizado') || ferramenta === 'Nenhuma') {
+      sugestoes.push('Incluir módulo de organização de repertório e uso do Google Drive');
+    }
+    if (desafios.includes('Ensaios improdutivos')) {
+      sugestoes.push('Incluir módulo de como dividir e conduzir ensaios produtivos');
+    }
+    if (desafios.includes('Dificuldade na regência')) {
+      sugestoes.push('Ampliar tempo do bloco de noções de regência na tarde');
+    }
+    if (parseInt(total) <= 8) {
+      sugestoes.push('Grupo pequeno — adaptar dinâmicas para formação reduzida');
+    }
+
+    const dbEl = document.getElementById('diagnose-box');
+    if (sugestoes.length) {
+      dbEl.style.display = 'block';
+      dbEl.innerHTML = `<h4>🎯 Sugestões automáticas para o dia</h4>` +
+        sugestoes.map(s => `<div class="diagnose-item">${s}</div>`).join('');
+    } else {
+      dbEl.style.display = 'none';
+    }
+
+    // Armazenar para cópia
+    window._textoResumo = `ANAMNESE — ORQUESTRANDO IDEIAS\n\n` +
+      `IDENTIFICAÇÃO\nRegente: ${nome}\nWhatsApp: ${whatsapp}\nIgreja: ${igreja} — ${cidade}\nTempo de regência: ${tempo}\n\n` +
+      `O GRUPO\nTotal de músicos: ${total}\nFrequência nos ensaios: ${frequencia}\nNível técnico: ${nivel}\nFrequência de ensaios: ${freqEnsaio}\nOrganização: ${ferramenta}\nInstrumentos: ${instrumentos.join(', ') || '—'}\n\n` +
+      `DESAFIOS E REPERTÓRIO\nRepertório: ${repertorio.join(', ') || '—'}\nDesafios: ${desafios.join(', ') || '—'}\nProblema principal: ${problema || '—'}\n\n` +
+      `EXPECTATIVAS\nO que espera: ${expectativa}\nSituação delicada: ${delicado || '—'}`;
+
+    const res = document.getElementById('resultado');
+    res.style.display = 'block';
+    res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function copiarTexto() {
+    if (!window._textoResumo) return;
+    navigator.clipboard.writeText(window._textoResumo).then(() => {
+      const msg = document.getElementById('copy-msg');
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 3000);
+    }).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = window._textoResumo;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      const msg = document.getElementById('copy-msg');
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 3000);
+    });
+  }
+</script>
+</body>
+</html>
